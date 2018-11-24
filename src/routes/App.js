@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Router, Route, Link } from 'dva/router';
 
 import { TabBar } from 'antd-mobile';
+import Nav from '../components/Nav/Nav';
 import styles from './App.css';
 
 import Home from './Home';
@@ -31,13 +32,13 @@ class App extends React.Component{
 	  return (
 	    <Router history={history} >
 	      <div className={styles.outBox}>
+	      	<Nav handleTouch={(pathname)=>this.handlePress(pathname)}  />
 	      	{/*tabbar*/}
-		      <div style={{ position: 'fixed', width: '100%', bottom: 0, height: 50 }}>
+		      {/*<div style={{ position: 'fixed', width: '100%', bottom: 0, height: 50 }}>
 		        <TabBar
 		          unselectedTintColor="#949494"
 		          tintColor="#33A3F4"
 		          barTintColor="white"
-		          hidden={this.state.hidden}
 		        >
 		          <TabBar.Item
 		            title="主页"
@@ -130,7 +131,7 @@ class App extends React.Component{
 		          >
 		          </TabBar.Item>
 		        </TabBar>
-		      </div>
+		      </div>*/}
 	      	
 	        {/*<ul>
 	          <li>
@@ -150,6 +151,7 @@ class App extends React.Component{
 		        <Route path="/AboutPage" component={AboutPage} />
 		        <Route path="/MyPage" component={MyPage} />
 	        </div>
+	        
 	      </div>
 	    </Router>
 	  );
