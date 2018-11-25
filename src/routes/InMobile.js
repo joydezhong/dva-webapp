@@ -1,18 +1,18 @@
 import { Component } from 'react';
 import { connect } from 'dva';
 
-class TestPage extends Component{
+class InMobile extends Component{
 	render(){
 		return (
 	    <div>
-	      <h1>TestPage</h1>
+	      <h1>InMobile</h1>
 	    </div>
 	  );
 	}
 }
 
-TestPage.propTypes = {
+InMobile.propTypes = {
 	
 };
 
-export default connect()(TestPage);
+export default connect()(InMobile);

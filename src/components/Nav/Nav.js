@@ -7,6 +7,7 @@ import { TabBar } from 'antd-mobile';
 import Menus from '../../common/menus.js';
 import styles from './Nav.css';
 
+
 class Nav extends React.Component{
 	constructor(props) {
     super(props)
@@ -24,7 +25,7 @@ class Nav extends React.Component{
 			<div style={{ position: 'fixed', width: '100%', bottom: 0, height: 50 }}>
         <TabBar
           unselectedTintColor="#949494"
-          tintColor="#33A3F4"
+          tintColor="#24ad3a"
           barTintColor="white"
         >
         {
