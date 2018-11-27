@@ -2,6 +2,16 @@ import { Component } from 'react';
 import { connect } from 'dva';
 
 class Home extends Component{
+	constructor(props){
+		super(props)
+	}
+	
+	componentWillMount() {
+      this.props.dispatch({
+        type: 'home/login',
+      });
+  }
+	
 	render(){
 		return (
 	    <div>
@@ -40,4 +50,11 @@ Home.propTypes = {
 	
 };
 
-export default connect()(Home);
+const mapStateToProps = state => {
+  return {
+    me: state.home.me,
+    token: state.home.token
+  };
+};
+
+export default connect(mapStateToProps)(Home);

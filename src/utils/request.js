@@ -1,30 +1,60 @@
-import fetch from 'dva/fetch';
+import axios from 'axios';
+import common from '../common/common';
 
-function parseJSON(response) {
-  return response.json();
+axios.defaults.baseURL = common.baseURL
+
+export default function request(params){
+	const allow = ['url', 'method']
+	let request = {}
+	
+	for(let i of Object.keys(params)){ // 过滤处理url
+		if(allow.includes(i)){
+			if(i === 'url'){
+				request[i] = `/api${params[i]}`
+			}else{
+				request[i] = params[i]
+			}
+		}
+	}
+	
+	//参数
+	if(params.method === 'get'){
+		request.params = {
+			filter: params.params
+		}
+	}else if(params.method === 'get1'){
+		request.method = 'get'
+		request.params = params.params
+	}else{
+		request.data = params.params
+	}
+	
+	//token
+	if(params.url !== '/accounts/login'){
+		request = Object.assign(request,{
+			headers: {
+				Authorization: localStorage.token
+			}
+		})
+	}
+	
+	return fetch(request)
+	
 }
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
 
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
-}
 
-/**
- * Requests a URL, returning a promise.
- *
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- * @return {object}           An object containing either "data" or "err"
- */
-export default function request(url, options) {
-  return fetch(url, options)
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(data => ({ data }))
-    .catch(err => ({ err }));
+export const fetch = request => {
+	return axios(request).then(res => {
+		return res.data;
+	}).catch(err => {
+		let error = err.response && err.response.data && err.response.data.error
+		
+		if(!error) return
+		
+		throw {
+			errCode: error.statusCode,
+			errMsg: error.msg || error.message || '系统出错'
+		}
+	})
 }
