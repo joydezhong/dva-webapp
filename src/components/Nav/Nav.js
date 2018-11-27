@@ -51,7 +51,7 @@ class Nav extends React.Component{
 		              this.setState({
 		                selectedTab: `${v.key}`,
 		              });
-		              	this.props.handleTouch(`${v.route}`);
+		              	this.props.handleTouch(`${v.path}`);
 		            }}
 		          >
 		          </TabBar.Item>

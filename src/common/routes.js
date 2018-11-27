@@ -1,8 +1,8 @@
-import Home from './Home';
-import InMobile from './InMobile';
-import OutMobile from './OutMobile';
-import Find from './Find';
-import MyPage from './MyPage';
+import Home from '../routes/Home';
+import InMobile from '../routes/InMobile';
+import OutMobile from '../routes/OutMobile';
+import Find from '../routes/Find';
+import MyPage from '../routes/MyPage';
 
 const routes = [
 	{
@@ -12,18 +12,21 @@ const routes = [
 	},{
 		name: '买手机',
 		path: '/InMobile',
-		component: Home
+		component: InMobile
 	},{
 		name: '卖机',
 		path: '/OutMobile',
-		component: Home
+		component: OutMobile
 	},{
 		name: '发现',
 		path: '/Find',
-		component: Home
+		component: Find
 	},{
 		name: '我的',
 		path: '/MyPage',
-		component: Home
+		component: MyPage
 	}
 ];
+
+
+export default routes;
