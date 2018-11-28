@@ -1,18 +1,19 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Router, Route, Link } from 'dva/router';
+import { Router, Route, Link, Redirect, Switch } from 'dva/router';
 
 import { TabBar } from 'antd-mobile';
 import Nav from '../components/Nav/Nav';
 import styles from './App.css';
-
-import routes from '../common/routes';
 
 // import Home from './Home';
 // import InMobile from './InMobile';
 // import OutMobile from './OutMobile';
 // import Find from './Find';
 // import MyPage from './MyPage';
+import routes from '../common/routes';
+
+import Login from './Login';
 
 class App extends React.Component{
 	constructor(props) {
@@ -21,7 +22,12 @@ class App extends React.Component{
       selectedTab: 'HomeTab',
     };
 	}
-	
+
+	// routerWillLeave(nextLocation) {
+ //    if (!localStorage.token)
+ //      this.props.history.push('#/Login')
+ //  },
+
 	handlePress = (pathname) => {
 		this.props.history.push(pathname)
   	console.log(pathname)
@@ -34,26 +40,45 @@ class App extends React.Component{
 	  return (
 	    <Router history={history} >
 	      <div className={styles.outBox}>
-	      	
-	      	<Nav handleTouch={(pathname)=>this.handlePress(pathname)}  />
-					
-					<div className={styles.appContainer}>
-		        {/*<Route exact path="/" component={Home} />
+	      {
+	      	routes.map(({path, component}, i) => {
+        		if(!localStorage.token){
+        			return (<Redirect key={i} to="/Login" />)
+        		}else if(path == '/'){
+			  			return (
+			  				<div key={i}>
+				  				<Nav handleTouch={(pathname)=>this.handlePress(pathname)}  />
+									<div className={styles.appContainer}>
+				  					<Route exact path={path} component={component} />
+				  				</div>
+				  			</div>
+			  				)
+			  		}else{
+			  			return (
+			  				<div key={i}>
+				  				<Nav handleTouch={(pathname)=>this.handlePress(pathname)}  />
+									<div className={styles.appContainer}>
+				  					<Route path={path} component={component} />
+				  				</div>
+				  			</div>
+			  				)
+			  		}
+			  	})
+	      }
+	      	{/*<Nav handleTouch={(pathname)=>this.handlePress(pathname)}  />
+					<div className={styles.appContainer}>*/}
+
+
+						{/*
+						<Route exact path="/" component={Home} />
 		        <Route path="/InMobile" component={InMobile} />
 		        <Route path="/OutMobile" component={OutMobile} />
 		        <Route path="/Find" component={Find} />
-		        <Route path="/MyPage" component={MyPage} />*/}
-		        {
-		        	routes.map(({path, component}, i) => {
-					  		if(path == '/'){
-					  			return (<Route exact path={path} component={component} />)
-					  		}else{
-					  			return (<Route path={path} component={component} />)
-					  		}
-					  	})
-		        }
-	        </div>
-	        
+		        <Route path="/MyPage" component={MyPage} />
+						*/}
+
+		        
+	        {/*</div>*/}
 	      </div>
 	    </Router>
 	  );

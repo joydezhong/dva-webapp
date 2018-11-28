@@ -1,48 +1,53 @@
-import {login} from '../services/Home'
+import { getProductLists } from '../services/Home'
 
 export default {
 
   namespace: 'home',
 
   state: {
-  	token: '',
-  	me: {}
+    productInfo: [],
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
+      return history.listen(({pathname, query}) => {
+        if (pathname === "/") {
+          dispatch({type: 'getProductLists', payload: { date: query }})
+        }
+      })
     },
   },
 
   effects: {
-    *login({ payload = {} }, { call, put, select }) {
-      // 登陆
-      const {id} = yield call(login, payload)
+    *getProductLists({ payload = {} }, { call, put, select }) {
+      // 获取列表
+      const data = yield call(getProductLists, payload)
 
-      if (id) {
-        localStorage.token = id
-        yield put({
-          type: 'setToken',
-          payload: id
-        })
-      }
+      if (!data) return
 
-      // 获取个人信息
-      return id
+      yield put({
+        type: 'change',
+        payload: {
+          name: 'productInfo',
+          value: data
+        }
+      })
+
+      return data
     },
   },
 
   reducers: {
-  	setToken(state, action){
-      const { payload } = action
+  	change(state, action) {
+      const {payload} = action
+
+      if (!payload || !payload.name) return
+
       return {
         ...state,
-        token: payload
+        [payload.name]: payload.value
       }
-   	},
-    save(state, action) {
-      return { ...state, ...action.payload };
-    },
+    }
   },
 
 };

@@ -1,9 +1,9 @@
 import request from '../utils/request';
 
-export function login(params) {
+export function getProductLists(params) {
   return request({
-    url: `/accounts/login`,
-    method: 'post',
-    params
+    url: `/product/lists`,
+    method: 'get',
+    // params
   })
 }
